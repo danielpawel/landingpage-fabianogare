@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Elite: Cálculos e Perícias Trabalhistas — Fabiano Gare</title>
+    
+    <!-- 2026 Fonts (Plus Jakarta Sans & Outfit) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#C9A84C',
+                            light: '#E8C97B',
+                            dark: '#8A6A1F',
+                        },
+                        dark: {
+                            DEFAULT: '#050505',
+                            100: '#0A0A0A',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                        },
+                        success: '#2ECC71',
+                        danger: '#E74C3C',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                    },
+                    animation: {
+                        'ticker': 'ticker 30s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'logo-entrance': 'logo-entrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'logo-entrance': {
+                            '0%': { opacity: '0', transform: 'translateY(-20px) scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: #FAFAFA;
+        }
+
+        /* Glassmorphism Refinado 2026 */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to right, #F5D061, #C9A84C, #F5D061);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Glow Especiais */
+        .btn-gold-glow {
+            position: relative;
+        }
+        .btn-gold-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #C9A84C, #E8C97B, #C9A84C);
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            border-radius: inherit;
+        }
+        .btn-gold-glow:hover::before {
+            opacity: 0.8;
+            filter: blur(20px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #1A1A1A; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C9A84C; }
+
+        /* VSL Glow 2026 */
+        .vsl-hero-glow {
+            box-shadow: 0 0 80px -20px rgba(201, 168, 76, 0.35);
+        }
+
+        /* Animações Flúidas IntersectionObserver */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Interaction UI - Glow Only */
+        #mouse-glow {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.03) 0%, rgba(201, 168, 76, 0) 70%);
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            #mouse-glow { display: block; }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden selection:bg-gold selection:text-dark">
+    <!-- Interatividade Cinética (Imersão de Fundo) -->
+    <div id="mouse-glow"></div>
+
+    <!-- TICKER BAR URGÊNCIA COPYWRITING -->
+    <div class="bg-dark border-b border-dark-border py-2.5 overflow-hidden flex whitespace-nowrap text-[11px] font-bold tracking-[0.2em] uppercase text-gray-400">
+        <div class="animate-ticker inline-flex items-center space-x-12 px-4">
+            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></div> Vagas Turma 2026 abertas por tempo limitado</span>
+            <span class="text-white/10">•</span>
+            <span>Elimine impugnações sumárias do Juiz</span>
+            <span class="text-white/10">•</span>
+            <span class="text-gold">Bônus: Planilha Master Pro INCLUSA</span>
+            <span class="text-white/10">•</span>
+            <span class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></div> Vagas Turma 2026 abertas por tempo limitado</span>
+            <span class="text-white/10">•</span>
+            <span>Elimine impugnações sumárias do Juiz</span>
+            <span class="text-white/10">•</span>
+            <span class="text-gold">Bônus: Planilha Master Pro INCLUSA</span>
+        </div>
+    </div>
+
+    <!-- NAVEGAÇÃO LÍQUIDA -->
+    <nav class="absolute top-12 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-auto flex items-center justify-center">
+            <a href="#" id="header-logo" class="cursor-pointer hover:scale-105 transition-transform duration-300">
+                <img src="assets/logo.png" alt="Fabiano Gare" class="h-24 md:h-32 w-auto object-contain animate-logo-entrance opacity-0">
+            </a>
+        </div>
+    </nav>
+
+    <!-- 01. HERO VSL (CINEMA PREMIUM) -->
+    <section class="relative min-h-[105vh] flex flex-col items-center justify-center pt-32 pb-24 px-4 sm:px-6 overflow-hidden">
+        <!-- Backlight Background -->
+        <div class="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-gold/5 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <!-- Copy: Agressiva, Centrada na Solução -->
+        <div class="relative z-10 text-center max-w-5xl mx-auto mb-10 mt-6 fade-in">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-gold/30 bg-gold/10 text-gold text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-md">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i> O Segredo das Varas do Trabalho
+            </div>
+            
+            <h1 class="font-display text-4xl sm:text-6xl md:text-[5.5rem] font-black tracking-tighter text-white mb-6 leading-[1.05]">
+                Pare de perder honorários por <br class="hidden lg:block">
+                <span class="gold-gradient-text">insegurança matemática.</span>
+            </h1>
+            
+            <p class="text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto leading-relaxed">
+                Aperte o play e descubra o método exato para blindar seus cálculos trabalhistas, evitar impugnações humilhantes e multiplicar os valores de seus laudos.
+            </p>
+        </div>
+
+        <!-- VSL PLAYER 2026 -->
+        <div id="vsl-wrapper" class="relative z-20 w-full max-w-4xl mx-auto fade-in animate-float transition-all duration-700" style="transition-delay: 150ms;">
+            <div id="vsl-container" class="relative w-full aspect-[16/9] bg-dark-100 rounded-3xl border border-white/20 overflow-hidden vsl-hero-glow group cursor-pointer ring-1 ring-gold/10 transition-all duration-700">
+                
+                <!-- Video Tag (Autoplay FORÇADO - Mudo para garantir início imediato) -->
+                <video id="vsl-video" class="absolute inset-0 w-full h-full object-cover pointer-events-none" autoplay muted playsinline loop>
+                    <source src="assets/vsl/vsl.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
+
+                <!-- Barra de Progresso Customizada (Invisível para controle) -->
+                <div class="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-30">
+                    <div id="vsl-progress-bar" class="h-full bg-gold w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Oculto / Atrasa para VSL -->
+        <div class="relative z-20 mt-14 text-center fade-in" style="transition-delay: 300ms;">
+            <a href="#oferta" class="btn-gold-glow inline-flex border border-gold/50 bg-gold text-dark px-10 sm:px-14 py-5 sm:py-6 rounded-full font-black text-xl hover:-translate-y-1 transition-transform duration-300">
+                DESTVARAR MEU ACESSO À TURMA 2026
+            </a>
+            <p class="mt-6 text-sm text-gray-500 flex items-center justify-center gap-2 font-medium">
+                <i data-lucide="lock" class="w-4 h-4 text-gray-400"></i>
+                Compra 100% segura e encriptada.
+            </p>
+        </div>
+    </section>
+
+    <!-- 02. DOR / AGITAÇÃO (BENTO GRID 2026 COPYWRITING) -->
+    <section class="py-32 relative bg-dark-100/30 border-t border-dark-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-4xl mx-auto mb-20 fade-in">
+                <h2 class="font-display text-4xl sm:text-6xl font-black text-white leading-tight mb-6">
+                    A verdade dura: Juízes não respeitam planilhas <span class="text-danger italic">amadoras.</span>
+                </h2>
+                <p class="text-xl text-gray-400 font-light">
+                    Você pode dominar a teoria, mas um único reflexo calculado errado ou a ignorância da ADC 58 vão destruir o valor da condenação e, pior, a sua reputação. Se você sente alguma dessas dores, você está deixando dinheiro na mesa:
+                </p>
+            </div>
+
+            <!-- Bento Box Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(250px,_auto)] max-w-6xl mx-auto">
+                
+                <!-- Box 1: Maior (Copy Agressiva Oportunidade Perdida) -->
+                <div class="md:col-span-2 md:row-span-2 glass-panel p-10 rounded-[32px] border border-red-500/10 hover:border-red-500/30 transition-colors flex flex-col justify-end relative overflow-hidden group fade-in">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                        <i data-lucide="trending-down" class="w-48 h-48 text-danger"></i>
+                    </div>
+                    <div class="relative z-10 mt-32">
+                        <span class="inline-block px-4 py-1.5 bg-danger/10 border border-danger/20 text-danger rounded-full text-xs font-bold uppercase tracking-widest mb-6">Dor Latente #1</span>
+                        <h3 class="font-display text-3xl font-bold text-white mb-4">Honorários Evaporados</h3>
+                        <p class="text-gray-400 text-lg">Advogados perdem entre <strong>R$ 10k a R$ 50k por processo</strong> simplesmente por não saberem reverter o cálculo de um Perito do Juiz. Eles engolem o laudo por medo de rebater a matemática.</p>
+                    </div>
+                </div>
+
+                <!-- Box 2 -->
+                <div class="glass-panel p-8 rounded-[32px] border-white/5 hover:border-gold/30 transition-colors fade-in" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
+                        <i data-lucide="file-x" class="w-6 h-6 text-gray-300"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3">Paralisia de Leitura</h3>
+                    <p class="text-gray-500 text-sm">Não saber de qual documento subtrair o valor real: Petição Inicial? Sentença? ou Acórdão? Esse erro é fatal na impugnação.</p>
+                </div>
+
+                <!-- Box 3 -->
+                <div class="glass-panel p-8 rounded-[32px] border-white/5 hover:border-gold/30 transition-colors fade-in" style="transition-delay: 200ms;">
+                    <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
+                        <i data-lucide="calculator" class="w-6 h-6 text-gray-300"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3">Matemática do Medo</h3>
+                    <p class="text-gray-500 text-sm">Cálculos complexos de DSR, Juros e Evolução Salarial feitos no "chute". O Fisco (INSS/IR) tritura cálculos fracos.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 03. A SOLUÇÃO (TIMELINE/CASCADE DO CURRÍCULOI) -->
+    <section class="py-32 bg-[radial-gradient(ellipse_at_top,_#0A0A0A_0%,_#050505_100%)] border-t border-dark-border relative">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="text-center md:text-left mb-20 fade-in flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div class="max-w-2xl">
+                    <span class="text-gold text-sm font-bold tracking-[0.2em] uppercase mb-4 block">A Arquitetura Oculta</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-black text-white leading-tight">O Fim da Síndrome do Impostor nos Tribunais.</h2>
+                </div>
+                <p class="text-gray-500 font-light max-w-md text-lg">
+                    Construído com base na realidade sangrenta do judiciário. Nada de teorias acadêmicas: você aprende a fazer, assinar o laudo e embolsar honorários altos.
+                </p>
+            </div>
+
+            <!-- Cascade Cards (Trilha do Conhecimento) -->
+            <div class="relative space-y-6">
+                <!-- Linha Guia Vertical Desktop -->
+                <div class="hidden md:block absolute top-10 bottom-10 left-[42px] w-px bg-gradient-to-b from-dark-border via-gold/50 to-dark-border z-0"></div>
+
+                <!-- Módulo 1 -->
+                <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start fade-in">
+                    <div class="hidden md:flex flex-shrink-0 w-[84px] h-[84px] bg-dark border border-white/10 rounded-full items-center justify-center font-display text-3xl font-black text-white/20 shadow-xl">01</div>
+                    <div class="glass-panel p-8 sm:p-10 rounded-[32px] flex-1 hover:border-white/20 transition-all duration-300">
+                        <h3 class="font-display text-2xl font-bold text-white mb-3">Lógica Inabalável (Hierarquia)</h3>
+                        <p class="text-gray-400 font-light mb-6">Aprendendo a base invisível. Trânsito em Julgado versus Sentenças e Acórdãos. Você saberá exatamente onde olhar para puxar os números irrefutáveis.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-3 py-1 bg-white/5 rounded-lg text-xs font-semibold text-gray-300">Julgados</span>
+                            <span class="px-3 py-1 bg-white/5 rounded-lg text-xs font-semibold text-gray-300">Doc. Ocultos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Módulo 2 & 3 (Agrupados para ritmo rápido) -->
+                <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start fade-in" style="transition-delay: 100ms;">
+                    <div class="hidden md:flex flex-shrink-0 w-[84px] h-[84px] bg-dark border border-white/10 rounded-full items-center justify-center font-display text-3xl font-black text-white/20 shadow-xl">02</div>
+                    <div class="glass-panel p-8 sm:p-10 rounded-[32px] flex-1 hover:border-white/20 transition-all duration-300">
+                        <h3 class="font-display text-2xl font-bold text-white mb-3">Matemática Pura & Fisco</h3>
+                        <p class="text-gray-400 font-light mb-6">Planilhamento violento. Descubra os macetes matemáticos de horas extras, DSR, naturezas salariais e como destroçar a matemática do Fisco (INSS, IRRF) sem cair em armadilhas judiciais.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-3 py-1 bg-white/5 rounded-lg text-xs font-semibold text-gray-300">Quotas Base</span>
+                            <span class="px-3 py-1 bg-white/5 rounded-lg text-xs font-semibold text-gray-300">Evolução Salarial</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Módulo 4: O GRANDE DESTAQUE (The Game Changer Copy) -->
+                <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start fade-in" style="transition-delay: 200ms;">
+                    <div class="hidden md:flex flex-shrink-0 w-[84px] h-[84px] bg-gold text-dark rounded-full items-center justify-center font-display text-3xl font-black shadow-[0_0_30px_rgba(201,168,76,0.3)]">VIP</div>
+                    <div class="bg-gradient-to-br from-[#1A150A] to-[#0A0905] border border-gold/30 p-8 sm:p-12 rounded-[32px] flex-1 hover:shadow-[0_0_50px_rgba(201,168,76,0.1)] transition-all duration-500 relative overflow-hidden">
+                        <!-- Glow interno -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 blur-[80px] rounded-full pointer-events-none"></div>
+                        
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/50 bg-gold/20 text-gold text-xs font-bold tracking-widest uppercase mb-6">
+                            Módulo Avançado 5 e 6
+                        </div>
+                        <h3 class="font-display text-3xl sm:text-4xl font-black text-white mb-4">Manual de Guerra & ADC 58</h3>
+                        <p class="text-gray-300 font-light text-lg mb-8">
+                            A cereja do bolo. Aqui você aprende a redigir laudos definitivos e a rebater impugnações. E o mais valioso de todos: domine as regras obscuras de índices de correção da polêmica decisão ADC 58. <strong class="text-white font-bold">É aqui que peritos faturam os laudos High-Ticket.</strong>
+                        </p>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center gap-3 text-gold"><i data-lucide="check-circle-2" class="w-5 h-5"></i> Laudos Periciais à Prova de Balas</li>
+                            <li class="flex items-center gap-3 text-gold"><i data-lucide="check-circle-2" class="w-5 h-5"></i> Resposta Esmagadora a Quesitos Adversos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04. AUTORIDADE DA FONTE (O Perito) -->
+    <section class="py-24 bg-dark relative overflow-hidden border-t border-dark-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-panel rounded-[40px] border border-white/5 p-8 md:p-16 flex flex-col lg:flex-row gap-16 items-center">
+                <!-- Foto Frame Moderno -->
+                <div class="w-full lg:w-5/12 relative fade-in">
+                    <div class="aspect-[4/5] bg-dark-100 rounded-3xl overflow-hidden shadow-2xl relative border border-white/10 ring-8 ring-dark">
+                        <!-- BG Placeholder -->
+                        <div class="absolute inset-0 bg-[url('assets/foto-perito.jpg')] bg-cover bg-center opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <span class="px-4 py-1.5 bg-gold text-dark rounded-full text-xs font-black tracking-widest uppercase mb-3 inline-block">Mestre Perito</span>
+                            <h3 class="font-display text-3xl font-black text-white">Fabiano Gare</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio Copy Sales-First -->
+                <div class="w-full lg:w-7/12 fade-in mt-10 lg:mt-0" style="transition-delay: 200ms;">
+                    <h2 class="font-display text-4xl sm:text-5xl font-black mb-8 leading-[1.1]">
+                        Conhecimento destilado e forjado <span class="text-gray-500 italic font-medium">nas trincheiras judiciais.</span>
+                    </h2>
+                    <p class="text-xl text-gray-400 font-light leading-relaxed mb-10">
+                        Eu não ensino teoria estéril de quadros brancos. Nos últimos 10+ anos atuando como Perito Contábil e Financeiro, eu refinei um método processual onde a matemática é usada não só para somar números, mas como <strong>arma de defesa e ataque de laudos</strong>. Meu objetivo aqui, ensinando você na Turma 2026, é muito simples: rasgar a sua venda e colocar você no patamar da elite pericial.
+                    </p>
+                    
+                    <div class="flex gap-8 border-l-4 border-gold pl-6">
+                        <div>
+                            <span class="block font-display text-4xl font-black text-white">2.000+</span>
+                            <span class="text-sm font-bold text-gray-500 tracking-widest uppercase mt-1">Alunos Treinados</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06. PROVA SOCIAL (Depoimentos Elite) -->
+    <section class="py-32 bg-dark relative overflow-hidden border-t border-dark-border">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 fade-in">
+                <span class="text-gold text-sm font-bold tracking-[0.2em] uppercase mb-4 block">O Sucesso de quem aplicou</span>
+                <h2 class="font-display text-4xl sm:text-6xl font-black text-white">Resultados Reais.</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="glass-panel p-8 rounded-[32px] border border-white/5 flex flex-col gap-6 fade-in">
+                    <div class="flex gap-1 text-gold">
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                    </div>
+                    <p class="text-gray-400 font-light italic text-lg leading-relaxed">
+                        "Recuperei o valor do investimento no meu primeiro laudo. A segurança que o Fabiano passa na parte de ADC 58 mudou o jogo nas minhas reuniões."
+                    </p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=100&h=100" alt="Dr. Roberto Silveira" class="w-12 h-12 rounded-full flex-shrink-0 border border-white/10 grayscale object-cover">
+                        <div>
+                            <p class="text-white font-bold text-sm">Dr. Roberto Silveira</p>
+                            <p class="text-gold text-xs uppercase tracking-widest font-black">Advogado Trabalhista</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Depoimento 2 -->
+                <div class="glass-panel p-8 rounded-[32px] border border-white/5 flex flex-col gap-6 fade-in" style="transition-delay: 100ms;">
+                    <div class="flex gap-1 text-gold">
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                    </div>
+                    <p class="text-gray-400 font-light italic text-lg leading-relaxed">
+                        "Sou contadora e sempre tive medo da pressão judicial. Depois do treinamento, minhas planilhas são elogiadas pelos juízes aqui da comarca."
+                    </p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100&h=100" alt="Mariana Costa" class="w-12 h-12 rounded-full flex-shrink-0 border border-white/10 grayscale object-cover">
+                        <div>
+                            <p class="text-white font-bold text-sm">Mariana Costa</p>
+                            <p class="text-gold text-xs uppercase tracking-widest font-black">Contadora Perita</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Depoimento 3 -->
+                <div class="glass-panel p-8 rounded-[32px] border border-white/5 flex flex-col gap-6 fade-in" style="transition-delay: 200ms;">
+                    <div class="flex gap-1 text-gold">
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold"></i>
+                    </div>
+                    <p class="text-gray-400 font-light italic text-lg leading-relaxed">
+                        "O módulo de perícia técnica é matador. Me deu a confiança que faltava para assinar laudos high-ticket sem medo de impugnação."
+                    </p>
+                    <div class="flex items-center gap-4 mt-auto">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100&h=100" alt="Sérgio Mendes" class="w-12 h-12 rounded-full flex-shrink-0 border border-white/10 grayscale object-cover">
+                        <div>
+                            <p class="text-white font-bold text-sm">Sérgio Mendes</p>
+                            <p class="text-gold text-xs uppercase tracking-widest font-black">Perito Judicial</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07. FAQ (Dúvidas Frequentes) -->
+    <section class="py-32 bg-dark border-t border-dark-border relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-20 fade-in">
+                <h2 class="font-display text-4xl sm:text-5xl font-black text-white">Dúvidas Frequentes</h2>
+                <p class="text-gray-500 mt-4">Tudo o que você precisa saber para tomar sua decisão hoje.</p>
+            </div>
+
+            <div class="space-y-4 fade-in">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item glass-panel rounded-2xl border border-white/5 overflow-hidden transition-all duration-500">
+                    <button class="w-full p-6 text-left flex items-center justify-between group">
+                        <span class="text-lg font-bold text-white transition-colors group-hover:text-gold uppercase tracking-tight">Preciso ter experiência prévia com processos trabalhistas?</span>
+                        <div class="faq-icon w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-500">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="p-6 pt-0 text-gray-400 leading-relaxed font-light">
+                            Não. O curso foi desenhado para funcionar tanto para iniciantes quanto para profissionais com experiência que querem se aprofundar tecnicamente. Os módulos iniciais partem do zero na leitura processual e evoluem progressivamente.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item glass-panel rounded-2xl border border-white/5 overflow-hidden transition-all duration-500">
+                    <button class="w-full p-6 text-left flex items-center justify-between group">
+                        <span class="text-lg font-bold text-white transition-colors group-hover:text-gold uppercase tracking-tight">Por quanto tempo terei acesso ao conteúdo?</span>
+                        <div class="faq-icon w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-500">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="p-6 pt-0 text-gray-400 leading-relaxed font-light">
+                            O acesso é vitalício. Você assiste no seu ritmo, quantas vezes quiser. Além disso, atualizações de conteúdo que forem feitas no curso serão disponibilizadas automaticamente para você, sem custo adicional.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item glass-panel rounded-2xl border border-white/5 overflow-hidden transition-all duration-500">
+                    <button class="w-full p-6 text-left flex items-center justify-between group">
+                        <span class="text-lg font-bold text-white transition-colors group-hover:text-gold uppercase tracking-tight">O conteúdo está atualizado com a jurisprudência recente?</span>
+                        <div class="faq-icon w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-500">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="p-6 pt-0 text-gray-400 leading-relaxed font-light">
+                            Sim. O curso inclui atualização conforme as decisões mais recentes do TST, incluindo a discussão sobre correção monetária (ADC 58), o impacto da Reforma Trabalhista no cálculo de verbas e as súmulas e OJs mais relevantes de 2025 e 2026.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item glass-panel rounded-2xl border border-white/5 overflow-hidden transition-all duration-500">
+                    <button class="w-full p-6 text-left flex items-center justify-between group">
+                        <span class="text-lg font-bold text-white transition-colors group-hover:text-gold uppercase tracking-tight">Posso me tornar perito judicial após o curso?</span>
+                        <div class="faq-icon w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-500">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="p-6 pt-0 text-gray-400 leading-relaxed font-light">
+                            O curso fornece o conhecimento técnico necessário para atuar como perito. A nomeação depende de cadastro no Tribunal de cada estado. O módulo de perícias aborda como funciona esse processo e como se destacar para ser nomeado com frequência.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="faq-item glass-panel rounded-2xl border border-white/5 overflow-hidden transition-all duration-500">
+                    <button class="w-full p-6 text-left flex items-center justify-between group">
+                        <span class="text-lg font-bold text-white transition-colors group-hover:text-gold uppercase tracking-tight">Como funciona a garantia de 7 dias?</span>
+                        <div class="faq-icon w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-500">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="p-6 pt-0 text-gray-400 leading-relaxed font-light">
+                            É simples: se você acessar o curso e, por qualquer motivo, não estiver satisfeito nos primeiros 7 dias, basta enviar uma mensagem e devolveremos 100% do valor pago. Sem questionamentos, sem complicações.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="faq-item glass-panel rounded-2xl border border-white/5 overflow-hidden transition-all duration-500">
+                    <button class="w-full p-6 text-left flex items-center justify-between group">
+                        <span class="text-lg font-bold text-white transition-colors group-hover:text-gold uppercase tracking-tight">O curso serve apenas para contadores?</span>
+                        <div class="faq-icon w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-transform duration-500">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="p-6 pt-0 text-gray-400 leading-relaxed font-light">
+                            Não. Embora o curso tenha um viés técnico contábil, advogados trabalhistas, analistas jurídicos, profissionais de RH e estudantes de Direito relatam grandes ganhos com o conteúdo. Principalmente para entender, conferir e questionar cálculos de terceiros.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 05. OFERTA IRRECUSÁVEL (Copy Anchoring + Escassez) -->
+    <section class="py-32 bg-dark relative border-t border-dark-border overflow-hidden">
+        <!-- Dramatic Lighting -->
+        <div class="absolute top-0 right-[10%] w-[800px] h-[800px] bg-gold/5 blur-[200px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-6 relative z-10 fade-in">
+            <div class="text-center mb-16">
+                <span class="text-gold text-xs font-black tracking-[0.2em] uppercase mb-4 block px-4 py-1.5 bg-gold/10 inline-block rounded-full border border-gold/20">Última Chamada / Turma 2026</span>
+                <h2 class="font-display text-5xl md:text-7xl font-black text-white leading-none">O Acesso Definitivo.</h2>
+                <p class="text-xl text-gray-400 mt-6 font-light">Um único cálculo mal feito ou ação impugnada custa mais de dez vezes o valor deste treinamento. <strong>Qual o valor da sua segurança profissional?</strong></p>
+            </div>
+
+            <div class="bg-dark rounded-[40px] border border-gold/20 p-1 md:p-2 shadow-[0_0_80px_rgba(201,168,76,0.1)]">
+                <!-- Inner Container -->
+                <div class="bg-dark-100 rounded-[36px] overflow-hidden grid lg:grid-cols-5 relative">
+                    
+                    <!-- Lado Esquerdo (Features & Bônus) -->
+                    <div class="lg:col-span-3 p-10 md:p-14 border-b lg:border-b-0 lg:border-r border-white/5">
+                        <h3 class="font-display text-3xl font-black text-white mb-8">Tudo Inclusos no Passe Elite 2026:</h3>
+                        
+                        <ul class="space-y-6 mb-12">
+                            <li class="flex items-start gap-4">
+                                <div class="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="check" class="w-4 h-4 text-gold"></i></div>
+                                <span class="text-gray-300 text-lg font-light">6 Módulos do Método Fabiano Gare Completo (Do Zero ao Avançado).</span>
+                            </li>
+                            <li class="flex items-start gap-4 p-4 rounded-2xl bg-gold/5 border border-gold/10">
+                                <div class="w-6 h-6 rounded-full bg-gold flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="lock-open" class="w-4 h-4 text-dark"></i></div>
+                                <div>
+                                    <span class="text-gold font-bold text-lg block">BÔNUS EXCLUSIVO 01</span>
+                                    <span class="text-gray-300 font-light">Acesso 100% gratuito à nossa Planilha Master Automática <span class="line-through text-gray-500 text-sm ml-1">(Vendida por R$ 297 sozinha)</span>.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4 p-4 rounded-2xl bg-white/5">
+                                <div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 mt-1"><i data-lucide="lock-open" class="w-4 h-4 text-white"></i></div>
+                                <div>
+                                    <span class="text-white font-bold text-lg block">BÔNUS EXCLUSIVO 02</span>
+                                    <span class="text-gray-300 font-light">Banco de Jurisprudências Selecionadas & Checklists Secretos para laudos.</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Garantia Forte -->
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 p-6 rounded-3xl border border-white/5 bg-dark">
+                            <i data-lucide="shield-check" class="w-12 h-12 text-gray-400"></i>
+                            <div>
+                                <h4 class="text-white font-black text-lg">Garantia Reversa de 7 Dias.</h4>
+                                <p class="text-sm text-gray-500 mt-2 font-light">Você acessa, testa o método em cálculos do seu dia-a-dia. Se o conteúdo não elevar o nível da sua perícia instantaneamente, clique em 1 lugar e seu dinheiro é devolvido. Sem perguntas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lado Direito (Checkout Painel) -->
+                    <div id="oferta" class="scroll-mt-32 lg:col-span-2 p-10 md:p-14 bg-gradient-to-b from-[#111] to-dark flex flex-col justify-center items-center text-center relative">
+                        <div class="text-gray-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4">Investimento Único</div>
+                        
+                        <!-- Anchoring Copy -->
+                        <div class="line-through decoration-danger decoration-[3px] text-gray-600 text-xl font-bold mb-2">De R$ 1.997,00</div>
+                        
+                        <div class="flex items-start justify-center text-white mb-2">
+                            <span class="font-display text-2xl font-bold mt-2 text-gold">R$</span>
+                            <span class="font-display text-[6rem] leading-none font-black tracking-tighter">697</span>
+                        </div>
+                        
+                        <p class="text-gray-400 text-base mb-10 font-light">ou parcele em até <span class="text-white font-bold">12x de R$ 64,90.</span></p>
+
+                        <!-- CTA Principal Maciço -->
+                        <a href="https://pay.hotmart.com/F104964775G" class="btn-gold-glow w-full block bg-gold text-dark py-6 rounded-full font-black text-2xl hover:scale-[1.03] transition-all duration-300 shadow-[0_0_30px_rgba(201,168,76,0.3)] mb-8">
+                            ENTRAR PARA A TURMA
+                        </a>
+
+                        <!-- Mini Timer Copy Escassez -->
+                        <div class="px-5 py-2.5 rounded-full border border-danger/30 bg-danger/10 text-danger text-xs font-bold flex items-center gap-3 w-full justify-center">
+                            <i data-lucide="clock" class="w-4 h-4"></i> Vagas Fecham em: <span id="payment-timer" class="font-mono text-sm">08:45:12</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER MÍNIMO PREMIUM -->
+    <footer class="bg-dark border-t border-dark-border py-16 text-center text-sm relative z-20">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="font-display text-2xl font-bold text-white/30 mb-8">
+                Fabiano<span class="text-gold/50 font-light">Gare</span>
+            </div>
+            <p class="text-gray-600 mb-8 font-light text-xs md:text-sm leading-relaxed max-w-2xl mx-auto">
+                "Este site não é afiliado ao Meta, Google ou Tribunal Superior do Trabalho. As estratégias ensinadas refletem vivência de mercado. Seus resultados financeiros diários dependem da sua própria qualificação técnica, ética profissional e tempo de estudo. A promessa reflete entrega educacional máxima."
+            </p>
+            <div class="text-gray-700 font-mono text-xs font-bold tracking-widest uppercase">
+                &copy; <span id="year"></span> Fabiano Gare • Termos de Uso • Privacidade
+            </div>
+        </div>
+    </footer>
+
+    <!-- STICKY CTA FOOTER (Só Aciona pós roleagem da primeira dobra) -->
+    <div id="sticky-footer" class="fixed bottom-0 left-0 right-0 z-50 bg-[#0A0A0A]/80 backdrop-blur-xl border-t border-white/10 py-4 px-6 translate-y-full transition-transform duration-500 shadow-[0_-20px_40px_rgba(0,0,0,0.5)]">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="hidden sm:block text-left">
+                <p class="text-white font-bold text-sm">Formação Elite 2026 de Perícias</p>
+                <p class="text-gray-400 text-xs mt-0.5">As vagas estão acabando devido ao Bônus Master Pro.</p>
+            </div>
+            <a href="#oferta" class="w-full sm:w-auto bg-gold text-dark px-8 py-3 rounded-full font-black text-sm uppercase tracking-widest hover:bg-gold-light transition-colors shadow-lg flex items-center justify-center gap-2">
+                Quero Minha Vaga <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // 1. Timer Persistente (24h de Urência Dinâmica)
+        const TIMER_KEY = 'vsl_timer_end';
+        const DURATION = 24 * 3600; // 24 horas
+
+        function getTimerEnd() {
+            let end = localStorage.getItem(TIMER_KEY);
+            if (!end) {
+                end = Date.now() + (DURATION * 1000);
+                localStorage.setItem(TIMER_KEY, end);
+            }
+            return parseInt(end);
+        }
+
+        function updateTimer() {
+            const end = getTimerEnd();
+            const now = Date.now();
+            let distance = Math.floor((end - now) / 1000);
+
+            if (distance <= 0) {
+                // Se acabou, reinicia para mais 24h ou mantém zerado? 
+                // Para vendas agressivas, reiniciamos ou mantemos 00:00:10.
+                distance = 10; 
+            }
+
+            const h = Math.floor(distance / 3600);
+            const m = Math.floor((distance % 3600) / 60);
+            const s = distance % 60;
+            
+            const formatted = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            document.getElementById('payment-timer').innerText = formatted;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // 2. FAQ Accordion Logic
+        document.querySelectorAll('.faq-item button').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const content = item.querySelector('.faq-content');
+                const icon = item.querySelector('.faq-icon');
+                
+                const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+                
+                // Fecha outros
+                document.querySelectorAll('.faq-content').forEach(c => c.style.maxHeight = '0px');
+                document.querySelectorAll('.faq-icon').forEach(i => i.style.transform = 'rotate(0deg)');
+                
+                if (!isOpen) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 1.1 Lógica de Glow Imersivo
+        const glow = document.getElementById('mouse-glow');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Glow segue o mouse suavizado
+            glow.style.left = mouseX + 'px';
+            glow.style.top = mouseY + 'px';
+        });
+
+        // 2. Animação Fade In por IntersectionObserver
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const appearOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+            });
+        }, appearOptions);
+        faders.forEach(fader => appearOnScroll.observe(fader));
+
+        // 3. Lógica do Sticky CTA Footer e Logo Scroll-to-Top
+        const stickyFooter = document.getElementById('sticky-footer');
+        const headerLogo = document.getElementById('header-logo');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 700) {
+                stickyFooter.classList.remove('translate-y-full');
+            } else {
+                stickyFooter.classList.add('translate-y-full');
+            }
+        });
+
+        headerLogo.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 4. Lógica da VSL (Início Imediato, Som ao Interagir e Barra de Progresso)
+        const vslWrapper = document.getElementById('vsl-wrapper');
+        const vslContainer = document.getElementById('vsl-container');
+        const vslVideo = document.getElementById('vsl-video');
+        const vslProgressBar = document.getElementById('vsl-progress-bar');
+
+        // Garantir Play imediato (Mudo por regra de navegadores)
+        window.addEventListener('load', () => {
+            vslVideo.play();
+        });
+
+        // Habilitar Áudio no Primeiro Clique (Qualquer lugar da página)
+        window.addEventListener('click', () => {
+            if (vslVideo.muted) {
+                vslVideo.muted = false;
+                vslVideo.play();
+            }
+        }, { once: true });
+
+        // Detectar Proporção do Vídeo
+        vslVideo.addEventListener('loadedmetadata', () => {
+            const aspect = vslVideo.videoWidth / vslVideo.videoHeight;
+            if (aspect < 1) {
+                vslContainer.classList.remove('aspect-[16/9]');
+                vslContainer.classList.add('aspect-[9/16]');
+                vslWrapper.classList.remove('max-w-4xl');
+                vslWrapper.classList.add('max-w-md');
+            } else {
+                vslContainer.classList.remove('aspect-[9/16]');
+                vslContainer.classList.add('aspect-[16/9]');
+                vslWrapper.classList.remove('max-w-md');
+                vslWrapper.classList.add('max-w-4xl');
+            }
+        });
+
+        // Atualizar Barra de Progresso
+        vslVideo.addEventListener('timeupdate', () => {
+            const progress = (vslVideo.currentTime / vslVideo.duration) * 100;
+            vslProgressBar.style.width = `${progress}%`;
+        });
+    </script>
+</body>
+</html>

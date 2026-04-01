@@ -1,0 +1,22 @@
+# Sistema / SO
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependências (Caso use build futuramente)
+node_modules/
+dist/
+build/
+.env
+
+# Lixo de Editores
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
